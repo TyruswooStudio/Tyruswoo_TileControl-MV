@@ -6,6 +6,30 @@
 // Tyruswoo_TileControl.js
 //=============================================================================
 
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 Kathy Bunn and Scott Tyrus Washburn
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 var Imported = Imported || {};
 Imported.Tyruswoo_TileControl = true;
 
@@ -13,7 +37,7 @@ var Tyruswoo = Tyruswoo || {};
 Tyruswoo.TileControl = Tyruswoo.TileControl || {};
 
 /*:
- * @plugindesc v4.0  Change tiles dynamically during gameplay!
+ * @plugindesc v4.0.1  Change tiles dynamically during gameplay!
  * @author Tyruswoo and McKathlin
  *
  * @param Tile Info on Move
@@ -33,11 +57,8 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * @default 30
  *
  * @help
- * Tile Control
- * For RPG Maker MV
+ * Tile Control for RPG Maker MV
  * By Tyruswoo and McKathlin
- *
- * Last Update: Nov. 8, 2021
  * ===========================================================================
  * Tyruswoo.com
  *   Join for more RPG Maker MV content and tutorials!
@@ -415,22 +436,31 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  *     * Fixed bug that kept the map from loading properly in some projects.
  *       Thanks to Cris Litvin for reporting this issue and helping us debug!
  * ===========================================================================
- * Terms of Use:
- * 1. You joined Tyruswoo.com as a paying member when you downloaded this
- *    plugin. You do not have to remain a paying member to use the plugin
- *    you downloaded. However, your support is greatly appreciated, and allows
- *    me to continue improving and updating plugins.
- * 2. You agree to not redistribute this plugin. You agree to direct others to
- *    Tyruswoo.com if they want the plugin.
- * 3. You may use this for any game for which you are one of the main
- *    developers. This includes any commercial or non-commercial game you are
- *    creating.
- * 4. Adding "Tyruswoo and McKathlin", "Tyruswoo Studio", or "Tyruswoo Team" 
- *    to your game's credits is greatly appreciated, but not required.
- * 5. Likewise, listing which Tyruswoo Team plugins you used is appreciated,
- *    but not required.
- * 6. A free copy of your game is awesome, but not required.
+ * v4.0.1: September 4, 2023:
+ *       * This plugin is now free and open source under the MIT license.
+ * ============================================================================
+ * MIT License
  *
+ * Copyright (c) 2023 Kathy Bunn and Scott Tyrus Washburn
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ * ============================================================================
  * Remember, only you can build your dreams! Enjoy! :)
  * ~Tyruswoo
  */
