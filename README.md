@@ -127,7 +127,7 @@ Manager.)
 For example, using the default Overworld tileset, a whirlpool can be placed
 using the following plugin command:
 
-    Tile Set PlayerLoc 0 2576
+`Tile Set PlayerLoc 0 2576`
 
 There is also an easier way to specify the tileId. Rather than using the
 tileId itself, a code can be used. The code should begin with the letter of
@@ -141,7 +141,7 @@ region pane can be used to determine the code number of any desired tile.
 For example, using the default Overworld tileset, a whirlpool can be placed
 using this plugin command:
 
-    Tile Set PlayerLoc 0 A11
+`Tile Set PlayerLoc 0 A11`
 
 Notice in the above, that the whirlpool tile is in the A panel, and it is
 tile 11 in the panel.
@@ -153,68 +153,75 @@ selection panel.
 For example, using the default Overworld tileset, a whirlpool can be placed
 using this plugin command:
 
-    Tile Set PlayerLoc 0 A3,1
+`Tile Set PlayerLoc 0 A3,1`
 
-Tile ID Codes:
-   There are two types of tile ID codes. You can use either of these codes
-   instead of the tileId.
+## Tile ID Codes
 
-   Tx,y      Where T is the tab, x is the x position in the tab's tileset,
-             and y is the y position in the tab's tileset. Also known as
-             "Letter X comma Y" or "Tab X comma Y".
-              - This tile code is determined by the Tab (A, B, C, D, or E)
-                and the (x,y) position of the desired tile within the
-                tilset.
-              - For example, in tab A, the top left tile is A0,0 (which in
-                the Overworld tileset is ocean).
-              - For example, in the default Overworld tileset, use tile code
-                A3,1 for a whirlpool.
-              - For example, in the default Overworld tileset, use tile code
-                B2,1 for a pyramid.
-              - You can use tile code B0,0 to erase any tile.
+There are two types of tile ID codes. You can use either of these codes
+instead of the tileId.
+
+### `Tx,y`
+Where `T` is the tab, `x` is the x position in the tab's tileset,
+and `y` is the y position in the tab's tileset.
+Also known as "Letter X comma Y" or "Tab X comma Y".
+
+This tile code is determined by the Tab (A, B, C, D, or E)
+and the (x,y) position of the desired tile within the
+tilset.
+
+Examples:
+- In tab A, the top left tile is A0,0 (which in the Overworld tileset is ocean).
+- In the default Overworld tileset, use tile code A3,1 for a whirlpool.
+- In the default Overworld tileset, use tile code B2,1 for a pyramid.
+
+You can use tile code B0,0 to erase any tile.
              
-             The Tx,y tile ID code assumes that you have a full tileset in
-             Tab A. This includes A1, A2, A3, A4, and A5. If a plugin
-             command calls for a Tile ID belonging to an absent tile sheet,
-             the console will log a warning, and the tile will not be placed.
-             If you do not have a full tileset in Tab A, refer to the table
-             below for the first Y value of each A tilesheet:
+The Tx,y tile ID code assumes that you have a full tileset in Tab A.
+This includes A1, A2, A3, A4, and A5. If a plugin command calls for a Tile ID
+belonging to an absent tile sheet, the console will log a warning,
+and the tile will not be placed. If you do not have a full tileset in Tab A,
+refer to the table below for the first Y value of each A tilesheet:
              
-             Tilesheet | First Y value (top of its sheet)
-             ----------+----------------------------------
-                    A1 |  0
-                    A2 |  2
-                    A3 |  6
-                    A4 | 10
-                    A5 | 16
+| Tilesheet | First Y value |
+|-----------|---------------|
+|        A1 |  0            |
+|        A2 |  2            |
+|        A3 |  6            |
+|        A4 | 10            |
+|        A5 | 16            |
 
-             Tabs B, C, D, and E (if present) have a single tilesheet each,
-             so finding their x,y coordinates is straightforward.
+Tabs B, C, D, and E (if present) have a single tilesheet each,
+so finding their x,y coordinates is straightforward.
 
-   Tn        Where T is the tab, and n is the number of the tile when
-             counting tiles from left to right, starting with zero. Also
-             known as "Letter Number" or "Tab Number".
-              - Tip: This numbering scheme is the same as how regions are
-                numbered and displayed in the regions (R) tab, so you can
-                use the regions tab to help with counting tiles.
-              - For example, in tab A, the first tile is A0 (which in the
-                Overworld tileset is ocean).
-              - For example, in the default Overworld tileset, use tile code
-                A11 for a whirlpool.
-              - For example, in the default Overworld tileset, use tile code
-                B10 for a pyramid.
-              - You can use tile code B0 to erase any tile.
+### Tn        
 
-             The Tn tile ID code assumes that you have a full
-             tileset in Tab A. This includes A1, A2, A3, A4, and A5. If you
-             do not have a full tileset in Tab A, refer to the tile code
-             cheat sheet below:
+Where `T` is the tab, and `n` is the number of the tile when
+counting tiles from left to right, starting with zero.
+Also known as "Letter Number" or "Tab Number".
 
-             1st code of A1:   0
-             1st code of A2:  16
-             1st code of A3:  48
-             1st code of A4:  80
-             1st code of A5: 128
+Tip: This numbering scheme is the same as how regions are
+numbered and displayed in the regions (R) tab, so you can
+use the regions tab to help with counting tiles.
+
+Examples:
+- In tab A, the first tile is A0 (which in the Overworld tileset is ocean).
+- In the default Overworld tileset, use tile code A11 for a whirlpool.
+- In the default Overworld tileset, use tile code B10 for a pyramid.
+
+You can use tile code B0 to erase any tile.
+
+The `Tn` tile ID code assumes that you have a full
+tileset in Tab A. This includes A1, A2, A3, A4, and A5. If you
+do not have a full tileset in Tab A, refer to the tile code
+cheat sheet below:
+
+| Tilesheet | 1st Code |
+|-----------|----------|
+|        A1 |  0       |
+|        A2 | 16       |
+|        A3 | 48       |
+|        A4 | 80       |
+|        A5 | 128      |
 
 By default, above the selected z layer, all z layers are erased when the
 tile is set. This is similar to how RPG Maker MV works in the map editor.
