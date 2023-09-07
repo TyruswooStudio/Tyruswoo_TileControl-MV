@@ -13,10 +13,6 @@ Great for farming, secret passages, making water or lava flow, mining, enemies t
 
 All supported plugin commands are listed below.
 
-Most of these commands call for x,y coordinates;
-you can use phrases like `x+2` or `y-1` to specify coordinates relative to the active event.
-Refer to the Relative Coordinates section of this document for more info.
-
 Most Tile Control commands call for one or more Tile IDs; these can be given as an exact integar,
 in the form `Tx,y`, or in the form `Tn`. Read the Tile ID Finding and Tile ID Codes sections of this document for examples and more details.
 
@@ -41,127 +37,6 @@ Set the tile towards which player is facing at layer z to selected tileId.
 
 ### `Tile Set EventLoc eventID z tileId`
 At the location of the event with eventID, set layer z to tileId.
-
-### `Tile SetRegion regionId tileId z`
-At all tiles with regionId, set the tile to tileId. z level is optional,
-and if not used, defaults to 0.
-
-### `Tile SetArea x1 y1 x2 y2 tileId z`
-At all tiles in the area defined by coordinates `x1`,`y1` to `x2`,`y2`,
-set the tile to tileId. `z` level is optional, and if not used, defaults to 0.
-
-### `Tile SetAreaRegion x1 y1 x2 y2 regionId tileId z`
-### `Tile SetRegionArea regionId x1 y1 x2 y2 tileId z`
-
-The above commands have identical effects of combining the
-area and region filters together to only change the `tileId`
-of tiles that meet both area and region conditions. The `z`
-level is optional, and if not used, defaults to 0.
-
-### `Tile Swap startTileId tileId z zEnd`
-At all tiles with tileId `startTileId`, set the tile to `tileId`.
-Affects z layer `z`, which may be excluded to default to z layer 0.
-`zEnd` is the layer used for setting the new tile,
-and is an optional argument that is by default the same as `z`.
-
-### `Tile SwapRegion regionId startTileId tileId z zEnd`
-At all tiles with `regionId` and `startTileId`, set the tile to `tileId`.
-`z` level is optional, and if not used, defaults to 0.
-`zEnd` is the layer used for setting the new tile, and
-is an optional argument that is by default the same as `z`.
-
-### `Tile SwapArea x1 y1 x2 y2 startTileId tileId z zEnd`
-At all tiles in the area defined by coordinates `x1`,`y1` to `x2`,`y2`,
-if the tile matches `startTileId`, then set the tile to `tileId`.
-`z` level is optional, and if not used, defaults to 0.
-`zEnd` is the layer used for setting the new tile, and is an
-optional argument that is by default the same as `z`.
-
-### `Tile SwapAreaRegion x1 y1 x2 y2 regionId startTileId tileId z zEnd`
-### `Tile SwapRegionArea regionId x1 y1 x2 y2 startTileId tileId z zEnd`
-The above commands have identical effects of combining the area,
-region, and tile filters together to only change the
-`tileId` of tiles that meet all area, region, and tile swap conditions.
-The `z` level is optional, and if not used, defaults to 0.
-`zEnd` is the layer used for setting the new tile,
-and is an optional argument that is by default the same as `z`.
-
-The SwapAreaRegion (or SwapRegionArea) command is useful if you want to
-change all `startTileId` to `tileId` within only a certain area of the map
-and certain region of the map. Therefore, three conditions must be met:
-startTileId, area, and region. This can be use for fine-tuned control
-of making lots of tile changes with only needing a few commands.
-
-### `Tile Fill x y tileId`
-### `Tile Fill x y tileId startTileId distance z`
-This command originates at coordinates `x`,`y` and sets tiles to `tileId`.
-If no `startTileId` is provided, then the tile found at `x`,`y`
-will be used to determine the `startTileId`.
-Using this command, it is possible to fill tiles, similar to a fill tool.
-
-`startTileId`, `distance`, and `z` are optional arguments.
-The `distance` argument determines how many far the fill command will go.
-Note that the distance depends on tiles being adjacent.
-The `z` argument can be used to determine which z level is used for checking
-and setting new tiles.
-
-### `Tile FillInnerBorder x y tileId`
-### `Tile FillInnerBorder x y tileId startTileId z`
-Finds the tiles that would be filled, but then only fills the
-outermost of these tiles.
-
-### `Tile FillOuterBorder x y tileId`
-### `Tile FillOuterBorder x y tileId startTileId z`
-Finds the tiles that would be filled, but then instead fills one
-tile beyond the border.
-
-### `Tile FillInnerBorderRegion x y tileId`
-### `Tile FillInnerBorderRegion x y tileId region startTileId z`
-Same as `FillInnerBorder`, but instead applies only to border tiles
-that have the specified region. (If the optional region argument
-is excluded, then region will be assumed to match the region at
-location `x`,`y` on the current map.)
-
-### `Tile FillOuterBorderRegion x y tileId`
-### `Tile FillOuterBorderRegion x y tileId region startTileId z`
-Same as `FillOuterBorder`, but instead modifies only the outer border
-tiles that match the specified region. (If the optional region
-argument is excluded, then region will be assumed to match the
-region at location `x`,`y` on the current map.)
-
-**Tip:** `FillOuterBorderRegion` is especially useful for making flowing
-water or lava, or drying up of water or lava.
-
-Note that if the optional argument startTileId is excluded from FillInnerBorder,
-FillOuterBorder, FillInnerBorderRegion, or FillOuterBorderRegion, the behavior of
-the plugin command may be different. For example, FillOuterBorder will attempt to
-fill the outer border of the specified startTileId, using tileId to fill. If
-startTileId is not included, it will be assumed to be the same as tileId. So, if
-tileId is not the same as the tile at the indicated location, the origin tile in
-question will be modified to tileId, without affecting any other tiles.
-
-## Relative Coordinates
-
-When stating `x` and `y` in a plugin command, you can provide
-exact integer coordinates, or you can use relative coordinates written in
-the form  `x`, `x+Int`, `x-Int`, `y`, `y+Int`, or `y-Int`,
-where `x` and `y` represent the current coordinates of the event
-running the plugin command; and where `Int` is any integer value.
-You can use relative coordinates to more easily specify where tile changes
-are to be made, without needing to determine the exact coordinate values!
-
-For example, the following sets tile A3,1 at a location two tiles to
-the right, and one tile down, from the event running the plugin command:
-
-`Tile Set x+2 y+1 0 A3,1`
-
-As another example, the following sets tile A3,1 at a location two tiles
-to the left, and one tile up, from the event running the plugin command:
-
-`Tile Set x-2 y-1 0 A3,1`
-
-Relative coordinates also work with all other plugin commands, including
-Set Area, Swap Area, and all types of Fill commands, including Fill commands.
 
 ## Tile ID Finding
 
@@ -289,16 +164,12 @@ any nearby autotiling.
 
 ## Version History
 
-**v2.1** - May 7, 2020
-- New plugin commands: `Tile SetRegion`, `Tile SetArea`, `Tile Swap`,
-  and other commands that combine these features.
+**v1.0** - December 10, 2019
+- Original release: Tile Control released for RPG Maker MV!
 
-**v3.0** - May 21, 2020
-- Added `Tile Fill` command!
+**v2.0** - April 19, 2020
+- Tile ID can now be expressed in form `Tn` or `Tx,y`.
+- Fixed autotiling errors.
 
-**v3.1** - July 12, 2020
-- Enabled providing relative coordinates in all commands.
-- Added border fill commands.
-
-**v3.1.1** - September 6, 2023:
-- This plugin is now free and open source under the MIT license.
+**v2.0.1** - September 6, 2023:
+- This older plugin version is now free and open source under the MIT license.

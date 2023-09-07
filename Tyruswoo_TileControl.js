@@ -37,7 +37,7 @@ var Tyruswoo = Tyruswoo || {};
 Tyruswoo.TileControl = Tyruswoo.TileControl || {};
 
 /*:
- * @plugindesc v3.1.1  Allows greater control of tiles and tilesets.
+ * @plugindesc v2.0.1  Allows greater control of tiles and tilesets.
  * @author Tyruswoo
  *
  * @param Tile Info on Move
@@ -60,7 +60,7 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * Tile Control
  * by Tyruswoo
  *
- * Last Update: July 12, 2020
+ * Last Update: April 19, 2020
  * ===========================================================================
  * Plugin Commands:
  *
@@ -82,116 +82,10 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  *
  * Tile Set EventLoc eventID z tileId      At the location of the event with
  *                                         eventID, set layer z to tileId.
- *
- * Tile SetRegion regionId tileId z        At all tiles with regionId, set the
- *                                         tile to tileId. z level is optional,
- *                                         and if not used, defaults to 0.
- *
- * Tile SetArea x1 y1 x2 y2 tileId z       At all tiles in the area defined by
- *                                         coordinates x1,y1 to x2,y2, set the
- *                                         tile to tileId. z level is optional,
- *                                         and if not used, defaults to 0.
- *
- * Tile SetAreaRegion x1 y1 x2 y2 regionId tileId z
- * Tile SetRegionArea regionId x1 y1 x2 y2 tileId z
- *
- *                 The above commands have identical effects of combining the
- *                 area and region filters together to only change the tileId
- *                 of tiles that meet both area and region conditions. The z
- *                 level is optional, and if not used, defaults to 0.
- *
- * Tile Swap startTileId tileId z zEnd     At all tiles with tileId startTileId,
- *                                         set the tile to tileId. Affects z
- *                                         layer z, which may be excluded to
- *                                         default to z layer 0. zEnd is the
- *                                         layer used for setting the new tile,
- *                                         and is an optional argument that is
- *                                         by default the same as z.
- *
- * Tile SwapRegion regionId startTileId tileId z zEnd
- *
- *                 At all tiles with regionId and startTileId, set the tile
- *                 to tileId. z level is optional, and if not used, defaults
- *                 to 0. zEnd is the layer used for setting the new tile, and
- *                 is an optional argument that is by default the same as z.
- *
- * Tile SwapArea x1 y1 x2 y2 startTileId tileId z zEnd
- *
- *                 At all tiles in the area defined by coordinates x1,y1 to
- *                 x2,y2, if the tile matches startTileId, then set the tile to
- *                 tileId. z level is optional, and if not used, defaults to 0.
- *                 zEnd is the layer used for setting the new tile, and is an
- *                 optional argument that is by default the same as z.
- *
- * Tile SwapAreaRegion x1 y1 x2 y2 regionId startTileId tileId z zEnd
- * Tile SwapRegionArea regionId x1 y1 x2 y2 startTileId tileId z zEnd
- *
- *                 The above commands have identical effects of combining the
- *                 area, region, and tile filters together to only change the
- *                 tileId of tiles that meet all area, region, and tile swap
- *                 conditions. The z level is optional, and if not used,
- *                 defaults to 0. zEnd is the layer used for setting the new
- *                 tile, and is an optional argument that is by default the
- *                 same as z.
- *
- * Tile Fill x y tileId
- * Tile Fill x y tileId startTileId distance z
- *
- *                 This command originates at coordinates x,y and sets tiles to
- *                 tileId. If no startTileId is provided, then the tile found at
- *                 x,y will be used to determine the startTileId. Using this
- *                 command, it is possible to fill tiles, similar to a fill tool.
- *
- *                 startTileId, distance, and z are optional arguments. The distance
- *                 argument determines how many far the fill command will go. Note
- *                 that the distance depends on tiles being adjacent. The z argument
- *                 can be used to determine which z level is used for checking and
- *                 setting new tiles.
- *
- * Tile FillInnerBorder x y tileId
- * Tile FillInnerBorder x y tileId startTileId z
- *
- *                 Finds the tiles that would be filled, but then only fills the
- *                 outermost of these tiles.
- *
- * Tile FillOuterBorder x y tileId
- * Tile FillOuterBorder x y tileId startTileId z
- *
- *                 Finds the tiles that would be filled, but then instead fills one
- *                 tile beyond the border.
- *
- * Tile FillInnerBorderRegion x y tileId
- * Tile FillInnerBorderRegion x y tileId region startTileId z
- *
- *                 Same as FillInnerBorder, but instead applies only to border tiles
- *                 that have the specified region. (If the optional region argument
- *                 is excluded, then region will be assumed to match the region at
- *                 location (x,y) on the current map.)
- *
- * Tile FillOuterBorderRegion x y tileId
- * Tile FillOuterBorderRegion x y tileId region startTileId z
- *
- *                 Same as FillOuterBorder, but instead modifies only the outer border
- *                 tiles that match the specified region. (If the optional region
- *                 argument is excluded, then region will be assumed to match the
- *                 region at location (x,y) on the current map.)
- *
- *                 Tip: FillOuterBorderRegion is especially useful for making flowing
- *                 water or lava, or drying up of water or lava.
- *
- * Note that if the optional argument startTileId is excluded from FillInnerBorder,
- * FillOuterBorder, FillInnerBorderRegion, or FillOuterBorderRegion, the behavior of
- * the plugin command may be different. For example, FillOuterBorder will attempt to
- * fill the outer border of the specified startTileId, using tileId to fill. If
- * startTileId is not included, it will be assumed to be the same as tileId. So, if
- * tileId is not the same as the tile at the indicated location, the origin tile in
- * question will be modified to tileId, without affecting any other tiles.
  * ===========================================================================
  * A tile's tileId may be identified by opening the console window (using
  * F12), then by having the party leader stand on the tile of interest, then
- * holding the Control (Ctrl) key and pressing Enter (Return). (Note that for
- * this to work, the "Tile Info on Button" option must be true in the Plugin
- * Manager.)
+ * holding the Control (Ctrl) key and pressing Enter (Return).
  *
  * For example, using the default Overworld tileset, a whirlpool can be placed
  * using the following plugin command:
@@ -224,18 +118,6 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  *
  *     Tile Set PlayerLoc 0 A3,1
  *
- * Caution! To use the special codes "letter number" or "letter x comma y",
- * the Tile Control plugin assumes that your tileset includes a full tileset,
- * including all tileset portions for the A tab; this includes A1, A2, A3, A4,
- * and A5. Some tilesets leave out one or more of the portions of the A tab,
- * such as A3 or A4. In the editor, it will appear that the A4 or A5 is in the
- * location of A3, for example. This can make it easy to accidentally mistake
- * the code! If you select a tile code for a tile that does not exist in the
- * tileset, then it can cause excessive processing that can freeze the game,
- * and may necessitate forcing the app to close! The easiest way to prevent this
- * problem is to just use placeholder A1, A2, A3, A4, and A5 tiles in your
- * tilesets, even if the tiles are not needed for the map. This makes it easier
- * to count the codes for the tiles.
  * ===========================================================================
  * By default, above the selected z layer, all z layers are erased when the
  * tile is set. This is similar to how RPG Maker MV works in the map editor.
@@ -254,134 +136,6 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * without changing the above z layers of the tile, and without affecting
  * any nearby autotiling.
  * ===========================================================================
- * v2.1: May 7, 2020
- *       It is now possible to use the following commands:
- *
- *           Tile SetRegion regionId tileId z
- *           Tile SetArea x1 y1 x2 y2 tileId z
- *           Tile SetAreaRegion x1 y1 x2 y2 regionId tileId z
- *           Tile SetRegionArea regionId x1 y1 x2 y2 tileId z
- *           Tile Swap startTileId tileId z zEnd
- *           Tile SwapRegion regionId startTileId tileId z zEnd
- *           Tile SwapArea x1 y1 x2 y2 startTileId tileId z zEnd
- *           Tile SwapAreaRegion x1 y1 x2 y2 regionId startTileId tileId z zEnd
- *           Tile SwapRegionArea regionId x1 y1 x2 y2 startTileId tileId z zEnd
- *
- *       Note: Set TileAreaRegion and Set TileRegionArea have the same
- *       result, but just switch the order of input of the regionId and
- *       area coordinates within the plugin command.
- *
- *       Also note that in the above plugin commands, z and zEnd are optional
- *       arguments. By default, z is 0. By default, zEnd is the same as z.
- *
- *       Tips:
- *
- *       The Swap command is useful if you want to change all startTileId
- *       to tileId on the current map.
- *
- *       The SwapArea command is useful if you want to change all startTileId
- *       to tileId within only a certain area of the map.
- *
- *       The SwapRegion command is useful if you want to change all startTileId
- *       to tileId within only a certain region of the map.
- *
- *       The SwapAreaRegion (or SwapRegionArea) command is useful if you want to
- *       change all startTileId to tileId within only a certain area of the map
- *       and certain region of the map. Therefore, three conditions must be met:
- *       startTileId, area, and region. This can be use for fine-tuned control
- *       of making lots of tile changes with only needing a few commands.
- * ===========================================================================
- * v3.0: May 21, 2020
- *       Adds the fill command!
- *
- *           Tile Fill x y tileId
- *           Tile Fill x y tileId startTileId distance z
- *
- *       This command will begin at coordinates x,y and will set tiles to
- *       tileId. If no startTileId is provided, then the tile found at x,y
- *       will be used to determine the startTileId. Using this command, it
- *       is possible to fill tiles, similar to a fill tool.
- *
- *       startTileId, distance, and z are optional arguments. The distance
- *       argument determines how many far the fill command will go. Note that
- *       the distance depends on tiles being adjacent. The z argument can be
- *       used to determine which z level is used for checking and setting
- *       new tiles.
- * ===========================================================================
- * v3.1: July 12, 2020
- *       Relative Coordinates:
- *
- *       Added relative coordinate options! Now, instead of defining the
- *       exact x and y coordinates, you can use x, x+Int, x-Int, y, y+Int, or
- *       y-Int, where x and y represent the current coordinates of the event
- *       running the plugin command; and where "Int" is any integer value.
- *       You can use this to more easily specify where tile changes are to be
- *       made, without needing to determine the exact coordinate values!
- *
- *       For example, the following sets tile A3,1 at a location two tiles to
- *       the right, and one tile down, from the event running the plugin command:
- *
- *           Tile Set x+2 y+1 0 A3,1
- *
- *       As another example, the following sets tile A3,1 at a location two tiles
- *       to the left, and one tile up, from the event running the plugin command:
- *
- *           Tile Set x-2 y-1 0 A3,1
- *
- *       Relative coordinates also work with all other plugin commands, including
- *       Set Area, Swap Area, and all types of Fill commands, including the
- *       new Fill commands (see below).
- *
- *       Fill Border Commands:
- *
- *       Added more specialized fill commands! These fill commands make
- *       it easier to use a single plugin command multiple times in many
- *       situations, rather than needing to define exactly the location
- *       to be changed.
- *
- *       Use the following to find the tiles that would be filled, but then
- *       only fill the outermost of these tiles.
- *
- *           Tile FillInnerBorder x y tileId
- *           Tile FillInnerBorder x y tileId startTileId z
- *
- *       Use the following to find the tiles that would be filled, but then
- *       instead fill one tile beyond the border.
- *
- *           Tile FillOuterBorder x y tileId
- *           Tile FillOuterBorder x y tileId startTileId z
- *
- *       Same as FillInnerBorder, but instead applies only to border tiles
- *       that have the specified region. (If the optional region argument
- *       is excluded, then region will be assumed to match the region at
- *       location (x,y) on the current map.)
- *
- *           Tile FillInnerBorderRegion x y tileId
- *           Tile FillInnerBorderRegion x y tileId region startTileId z
- *
- *       Same as FillOuterBorder, but instead modifies only the outer border
- *       tiles that match the specified region. (If the optional region argument
- *       is excluded, then region will be assumed to match the region at
- *       location (x,y) on the current map.)
- *
- *           Tile FillOuterBorderRegion x y tileId
- *           Tile FillOuterBorderRegion x y tileId region startTileId z
- *
- *       Tip: FillOuterBorderRegion is especially useful for making flowing
- *       water or lava, or drying up of water or lava.
- *
- *       Note that if the optional argument startTileId is excluded from any
- *       of the above, the behavior of the plugin command may be different.
- *       For example, FillOuterBorder will attempt to fill the outer border
- *       of the specified startTileId, using tileId to fill. If startTileId
- *       is not included, it will be assumed to be the same as tileId.
- *       So, if tileId is not the same as the tile at the indicated location,
- *       the origin tile in question will be modified to tileId, without
- *       affecting any other tiles.
- * ===========================================================================
- * v3.1.1: Sept. 6, 2023
- *         This plugin is now free and open source under the MIT License.
- * ============================================================================
  * MIT License
  *
  * Copyright (c) 2023 Kathy Bunn and Scott Tyrus Washburn
@@ -403,6 +157,7 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
+ * 
  */
  
 Tyruswoo.Parameters = PluginManager.parameters('Tyruswoo_TileControl');
@@ -503,7 +258,7 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 						y = $gamePlayer.y;
 						z = args[2];
 						tileId = this.readTileCode(args[3]);
-						//console.log("Tile Set PlayerLoc z =", z, "to tileId", tileId);
+					//	console.log("Tile Set PlayerLoc z =", z, "to tileId", tileId);
 						break;
 					case 'playerfront':
 						x = $gamePlayer.x;
@@ -513,7 +268,7 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 						y = $gameMap.yWithDirection(y, d);
 						z = args[2];
 						tileId = this.readTileCode(args[3]);
-						//console.log("Tile Set PlayerFront z =", z, "to tileId", tileId);
+					//	console.log("Tile Set PlayerFront z =", z, "to tileId", tileId);
 						break;
 					case 'eventloc':
 						var e = $gameMap.event(args[2]);
@@ -521,219 +276,19 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 						y = e.y;
 						z = args[3];
 						tileId = this.readTileCode(args[4]);
-						//console.log("Tile Set EventLoc at event =", e._eventId, "z =", z, "to tileId", tileId);
+					//	console.log("Tile Set EventLoc at event =", e._eventId, "z =", z, "to tileId", tileId);
 						break;
 					default:
-						x = this.readCoordCode(args[1]);
-						y = this.readCoordCode(args[2]);
+						x = args[1];
+						y = args[2];
 						z = args[3];
 						tileId = this.readTileCode(args[4]);
-						//console.log("Tile Set", x, y, z, "to tileId", tileId);
+					//	console.log("Tile Set", x, y, z, "to tileId", tileId);
 				}
 				$gameMap.setTileId(x, y, z, tileId, clearUpperLayers, exact);
 				break;
-			case 'setregion':
-				var regionId = args[1];
-				var tileId = this.readTileCode(args[2]);
-				var z = 0; //By default, the lowest layer is the location at which the region's tiles are affected.
-				if(args[3] != null) {z = args[3]}; //But, if the z layer is set, then may affect higher tiles, while leaving lower tiles intact.
-				$gameMap.setTileIdByRegion(regionId, tileId, z);
-				//console.log("Tile Set Region", regionId, "at z layer", z, "to tileId", tileId);
-				break;
-			case 'setarea':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var x2 = this.readCoordCode(args[3]);
-				var y2 = this.readCoordCode(args[4]);
-				var tileId = this.readTileCode(args[5]);
-				var z = 0;
-				if(args[6] != null) {z = args[6]};
-				$gameMap.setTileIdByArea(x1, y1, x2, y2, tileId, z);
-				//console.log("Tile Set Area within x1", x1, "y1", y1, "and x2", x2, "y2", y2, "at z layer", z, "to tileId", tileId);
-				break;
-			case 'setarearegion':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var x2 = this.readCoordCode(args[3]);
-				var y2 = this.readCoordCode(args[4]);
-				var regionId = args[5];
-				var tileId = this.readTileCode(args[6]);
-				var z = 0;
-				if(args[7] != null) {z = args[7]};
-				$gameMap.setTileIdByAreaRegion(x1, y1, x2, y2, regionId, tileId, z);
-				break;
-			case 'setregionarea':
-				var regionId = args[1];
-				var x1 = this.readCoordCode(args[2]);
-				var y1 = this.readCoordCode(args[3]);
-				var x2 = this.readCoordCode(args[4]);
-				var y2 = this.readCoordCode(args[5]);
-				var tileId = this.readTileCode(args[6]);
-				var z = 0;
-				if(args[7] != null) {z = args[7]};
-				$gameMap.setTileIdByAreaRegion(x1, y1, x2, y2, regionId, tileId, z);
-				break;
-			case 'swap':
-				var startTileId = this.readTileCode(args[1]);
-				var tileId = this.readTileCode(args[2]);
-				var z = 0;
-				if(args[3] != null) {z = args[3]};
-				var zEnd = z;
-				if(args[4] != null) {zEnd = args[4]};
-				$gameMap.swapTileId(startTileId, tileId, z, zEnd);
-				break;
-			case 'swapregion':
-				var regionId = args[1];
-				var startTileId = this.readTileCode(args[2]);
-				var tileId = this.readTileCode(args[3]);
-				var z = 0;
-				if(args[4] != null) {z = args[4]};
-				var zEnd = z;
-				if(args[5] != null) {zEnd = args[5]};
-				$gameMap.swapTileIdByRegion(regionId, startTileId, tileId, z, zEnd);
-				break;
-			case 'swaparea':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var x2 = this.readCoordCode(args[3]);
-				var y2 = this.readCoordCode(args[4]);
-				var startTileId = this.readTileCode(args[5]);
-				var tileId = this.readTileCode(args[6]);
-				var z = 0;
-				if(args[7] != null) {z = args[7]};
-				var zEnd = z;
-				if(args[8] != null) {zEnd = args[8]};
-				$gameMap.swapTileIdByArea(x1, y1, x2, y2, startTileId, tileId, z, zEnd);
-				break;
-			case 'swaparearegion':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var x2 = this.readCoordCode(args[3]);
-				var y2 = this.readCoordCode(args[4]);
-				var regionId = args[5];
-				var startTileId = this.readTileCode(args[6]);
-				var tileId = this.readTileCode(args[7]);
-				var z = 0;
-				if(args[8] != null) {z = args[8]};
-				var zEnd = z;
-				if(args[9] != null) {zEnd = args[9]};
-				$gameMap.swapTileIdByAreaRegion(x1, y1, x2, y2, regionId, startTileId, tileId, z, zEnd);
-				break;
-			case 'swapregionarea':
-				var regionId = args[1];
-				var x1 = this.readCoordCode(args[2]);
-				var y1 = this.readCoordCode(args[3]);
-				var x2 = this.readCoordCode(args[4]);
-				var y2 = this.readCoordCode(args[5]);
-				var startTileId = this.readTileCode(args[6]);
-				var tileId = this.readTileCode(args[7]);
-				var z = 0;
-				if(args[8] != null) {z = args[8]};
-				var zEnd = z;
-				if(args[9] != null) {zEnd = args[9]};
-				$gameMap.swapTileIdByAreaRegion(x1, y1, x2, y2, regionId, startTileId, tileId, z, zEnd);
-				break;
-			case 'fill':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var tileId = this.readTileCode(args[3]);
-				var startTileId = 'null';
-				if(args[4] != null) {startTileId = this.readTileCode(args[4])};
-				var distance = 10000;
-				if(args[5] != null) {distance = args[5];};
-				var z = 0;
-				if(args[6] != null) {z = args[6];};
-				var script = '$gameMap.fillTileId(' + x1.toString() + ', ' + y1.toString() + ', ' + tileId + ', ' + startTileId + ', ' + distance.toString() + ', ' + z.toString() + ');' + '\n';
-				eval(script); //Not sure why this works as a script, but not as a direct function call, but this work-around by using a script does work...
-				break;
-			case 'fillinnerborder':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var tileId = this.readTileCode(args[3]);
-				var startTileId = 'null';
-				if(args[4] != null) {startTileId = this.readTileCode(args[4]);};
-				var z = 0;
-				if(args[5] != null) {z = args[5];};
-				if(startTileId == 'null' && $gameMap.autotileType(parseInt(x1), parseInt(y1), z) != $gameMap.autotileTypeById(parseInt(tileId)) && $gameMap.tileId(parseInt(x1), parseInt(y1), z) != parseInt(tileId)) {
-					$gameMap.setTileId(parseInt(x1), parseInt(y1), z, parseInt(tileId), true, false);
-				} else {
-					var script = '$gameMap.fillInnerBorder(' + x1 + ', ' + y1 + ', ' + tileId + ', ' + startTileId + ', ' + z.toString() + ');' + '\n';
-					eval(script); //Not sure why this works as a script, but not as a direct function call, but this work-around by using a script does work...
-				};
-				break;
-			case 'fillouterborder':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var tileId = this.readTileCode(args[3]);
-				var startTileId = 'null';
-				if(args[4] != null) {startTileId = this.readTileCode(args[4]);};
-				var z = 0;
-				if(args[5] != null) {z = args[5];};
-				if(startTileId == 'null' && $gameMap.autotileType(parseInt(x1), parseInt(y1), z) != $gameMap.autotileTypeById(parseInt(tileId)) && $gameMap.tileId(parseInt(x1), parseInt(y1), z) != parseInt(tileId)) {
-					$gameMap.setTileId(parseInt(x1), parseInt(y1), z, parseInt(tileId), true, false);
-				} else {
-					var script = '$gameMap.fillOuterBorder(' + x1 + ', ' + y1 + ', ' + tileId + ', ' + startTileId + ', ' + z.toString() + ');' + '\n';
-					eval(script); //Not sure why this works as a script, but not as a direct function call, but this work-around by using a script does work...
-				};
-				break;
-			case 'fillinnerborderregion':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var tileId = this.readTileCode(args[3]);
-				var region = $gameMap.regionId(x1, y1);
-				if(args[4] != null) {region = args[4];};
-				var startTileId = 'null';
-				if(args[5] != null) {startTileId = this.readTileCode(args[5]);};
-				var z = 0;
-				if(args[6] != null) {z = args[6];};
-				if(startTileId == 'null' && $gameMap.autotileType(parseInt(x1), parseInt(y1), z) != $gameMap.autotileTypeById(parseInt(tileId)) && $gameMap.tileId(parseInt(x1), parseInt(y1), z) != parseInt(tileId)) {
-					$gameMap.setTileId(parseInt(x1), parseInt(y1), z, parseInt(tileId), true, false);
-				} else {
-					var script = '$gameMap.fillInnerBorderRegion(' + x1 + ', ' + y1 + ', ' + tileId + ', ' + region + ', ' + startTileId + ', ' + z.toString() + ');' + '\n';
-					eval(script); //Not sure why this works as a script, but not as a direct function call, but this work-around by using a script does work...
-				};
-				break;
-			case 'fillouterborderregion':
-				var x1 = this.readCoordCode(args[1]);
-				var y1 = this.readCoordCode(args[2]);
-				var tileId = this.readTileCode(args[3]);
-				var region = $gameMap.regionId(x1, y1);
-				if(args[4] != null) {region = args[4];};
-				var startTileId = 'null';
-				if(args[5] != null) {startTileId = this.readTileCode(args[5]);};
-				var z = 0;
-				if(args[6] != null) {z = args[6];};
-				if(startTileId == 'null' && $gameMap.autotileType(parseInt(x1), parseInt(y1), z) != $gameMap.autotileTypeById(parseInt(tileId)) && $gameMap.tileId(parseInt(x1), parseInt(y1), z) != parseInt(tileId)) {
-					$gameMap.setTileId(parseInt(x1), parseInt(y1), z, parseInt(tileId), true, false);
-				} else {
-					var script = '$gameMap.fillOuterBorderRegion(' + x1 + ', ' + y1 + ', ' + tileId + ', ' + region + ', ' + startTileId + ', ' + z.toString() + ');' + '\n';
-					eval(script); //Not sure why this works as a script, but not as a direct function call, but this work-around by using a script does work...					
-				};
-				break;
 		}
 	}
-};
-
-// New method
-// If a relative coordinate code is used, provide the coordinate value based on the position of the current event.
-Game_Interpreter.prototype.readCoordCode = function(arg) {
-	var value = arg;
-	if(typeof arg == "string") {
-		var e = $gameMap.event(this._eventId);
-		var offset = arg.substr(2) ? parseInt(arg.substr(2)) : 0;
-		if(arg.charAt(1) == '-') {offset = -offset;};
-		switch(arg.charAt(0)) {
-			case 'x':
-				value = e.x + offset;
-				//console.log("X coord:", value);
-				break;
-			case 'y':
-				value = e.y + offset;
-				//console.log("Y coord:", value);
-				break;
-		}
-	}
-	return value;
 };
 
 // New method
@@ -789,64 +344,6 @@ Game_Interpreter.prototype.readTileCode = function(arg) {
 //=============================================================================
 // Game_Map
 //=============================================================================
-
-// New method
-Game_Map.prototype.tileIdCode = function(x, y, z) {
-	return this.tileCodeAt(x, y, z);
-};
-
-// New method
-Game_Map.prototype.readTileCode = function(arg) {
-	var tileId = 0;
-	var codeLetter = typeof arg == "string" ? arg.toLowerCase().charAt(0) : null;
-	var codeNumber = -1;
-	var codeX = 0;
-	var codeY = 0;
-	if(typeof arg == "string") {
-		if(arg.charAt(2) && arg.charAt(2) == ',') {
-			codeX = parseInt(arg.charAt(1));
-			codeY = parseInt(arg.substr(3));
-		} else {
-			codeNumber = parseInt(arg.substr(1));
-		};
-	};
-	//console.log("Tyruswoo Tile Control codeLetter:", codeLetter);
-	//console.log("Tyruswoo Tile Control codeNumber:", codeNumber);
-	//console.log("Tyruswoo Tile Control codeX:", codeX);
-	//console.log("Tyruswoo Tile Control codeY:", codeY);
-	switch(codeLetter) {
-		case 'a':
-			
-			if(codeNumber <= 127) { //A1, A2, A3, and A4 autotiles.
-				tileId += Tilemap.TILE_ID_A1;
-				tileId += (codeNumber >= 0) ? codeNumber * 48 : (codeY * 8 + codeX) * 48;
-			} else { //A5 tiles.
-				tileId += Tilemap.TILE_ID_A5;
-				tileId += (codeNumber >= 0) ? codeNumber - 128 : (codeY - 16) * 8 + codeX;
-			};
-			break;
-		case 'b':
-			tileId += Tilemap.TILE_ID_B;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		case 'c':
-			tileId += Tilemap.TILE_ID_C;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		case 'd':
-			tileId += Tilemap.TILE_ID_D;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		case 'e':
-			tileId += Tilemap.TILE_ID_E;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		default:
-			tileId = arg;
-	};
-	//console.log("Tyruswoo Tile Control Interpreted tileId:", tileId);
-	return tileId;
-};
 
 // New method
 // This method is useful for use as a script in a Conditional Branch.
@@ -935,7 +432,6 @@ Game_Map.prototype.logTileInfo = function(x, y) {
 Game_Map.prototype.setTileId = function(x, y, z, tileId, clearUpperLayers, exact) {
 	var x = Math.round(x);
 	var y = Math.round(y);
-	var tileId = this.readTileCode(tileId);
 	if (clearUpperLayers) {
 		for (var zz = z + 1; zz <= 3; zz++) {
 			this.setExactTileId(x, y, zz, 0);
@@ -956,7 +452,6 @@ Game_Map.prototype.setTileId = function(x, y, z, tileId, clearUpperLayers, exact
 		this.autotileNeighbor(x + 1, y - 1, z);
 		this.autotileNeighbor(x + 1, y + 1, z);
 	}
-
 };
 
 // New method
@@ -1105,297 +600,6 @@ Game_Map.prototype.calculateAutotileNESWShape = function(n, e, s, w) {
 	return shape;
 };
 
-// New method
-Game_Map.prototype.setTileIdByRegion = function(regionId, tileId, z) {
-	var width = $dataMap.width;
-    var height = $dataMap.height;
-	for(var y = 0; y <= height; y++) {
-		for(var x = 0; x <= width; x++) {
-			if(this.regionId(x, y) == regionId) {this.setTileId(x, y, z, tileId, true, false)};
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.setTileIdByArea = function(x1, y1, x2, y2, tileId, z) {
-	for(var y = y1; y <= y2; y++) {
-		for(var x = x1; x <= x2; x++) {
-			this.setTileId(x, y, z, tileId, true, false);
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.setTileIdByAreaRegion = function(x1, y1, x2, y2, regionId, tileId, z) {
-	for(var y = y1; y <= y2; y++) {
-		for(var x = x1; x <= x2; x++) {
-			if(this.regionId(x, y) == regionId) {this.setTileId(x, y, z, tileId, true, false)};
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.swapTileId = function(startTileId, tileId, z, zEnd) {
-	var width = $dataMap.width;
-    var height = $dataMap.height;
-	var a1 = (startTileId >= 2048 ? Math.floor((startTileId - 2048) / 48) : -1);
-	for(var y = 0; y <= height; y++) {
-		for(var x = 0; x <= width; x++) {
-			var a = this.autotileType(x, y, z);
-			if(((a == a1) && (a != -1)) || this.tileId(x, y, z) == startTileId) {this.setTileId(x, y, zEnd, tileId, true, false)};
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.swapTileIdByRegion = function(regionId, startTileId, tileId, z, zEnd) {
-	var width = $dataMap.width;
-    var height = $dataMap.height;
-	var a1 = (startTileId >= 2048 ? Math.floor((startTileId - 2048) / 48) : -1);
-	for(var y = 0; y <= height; y++) {
-		for(var x = 0; x <= width; x++) {
-			var a = this.autotileType(x, y, z);
-			if(this.regionId(x, y) == regionId && (((a == a1) && (a != -1)) || this.tileId(x, y, z) == startTileId)) {this.setTileId(x, y, zEnd, tileId, true, false)};
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.swapTileIdByArea = function(x1, y1, x2, y2, startTileId, tileId, z, zEnd) {
-	var a1 = (startTileId >= 2048 ? Math.floor((startTileId - 2048) / 48) : -1);
-	for(var y = y1; y <= y2; y++) {
-		for(var x = x1; x <= x2; x++) {
-			var a = this.autotileType(x, y, z);
-			if(((a == a1) && (a != -1)) || this.tileId(x, y, z) == startTileId) {this.setTileId(x, y, zEnd, tileId, true, false)};
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.swapTileIdByAreaRegion = function(x1, y1, x2, y2, regionId, startTileId, tileId, z, zEnd) {
-	var a1 = (startTileId >= 2048 ? Math.floor((startTileId - 2048) / 48) : -1);
-	for(var y = y1; y <= y2; y++) {
-		for(var x = x1; x <= x2; x++) {
-			var a = this.autotileType(x, y, z);
-			if(this.regionId(x, y) == regionId && (((a == a1) && (a != -1)) || this.tileId(x, y, z) == startTileId)) {this.setTileId(x, y, zEnd, tileId, true, false)};
-		}	
-	}
-};
-
-// New method
-Game_Map.prototype.spreadTileId = function(x1, y1, tileId, z) {
-	var d = 0; //Additional distance to spread from the origin, in tiles. (Where x1,y1 is the origin.) If spread has already occured, then proceeds further.
-	var a1 = this.autotileTypeById(tileId);
-	for(var i = 0; i <= d; i++) {
-		var matchCount = 0;
-		var x = x1;
-		var y = y1;
-		var a = this.autotileType(x, y, z);
-		if(((a == a1) && (a != -1)) || this.tileId(x, y, z) == tileId) {
-			matchCount += 1;
-		}
-		if(matchCount <= 0 || matchCount < i*4) {
-			this.setTileId(x, y, z, tileId, true, false);
-		}
-	}
-};
-
-// New method
-Game_Map.prototype.fillTileId = function(x1, y1, tileId, startTileId, distance, z) {
-	if(z == null) {z = 0;};
-	if(distance == null) {distance = 10000};
-	if(startTileId == null) {startTileId = this.tileId(x1, y1, z);}; //If no startTileId provided, then use whatever tile is currently found at location (x1,y1,z).
-	var tiles = this.detectFill(x1, y1, startTileId, distance, z);
-	this.setTileIdByArray(tiles, tileId, z);
-	var text = tiles.length == 1 ? "Tile" : "Tiles";
-	var tileCode = this.tileCodeFromId(tileId);
-	console.log("Filled", tiles.length , text, "with TileCode", tileCode, tiles);
-};
-
-// New method
-// Set all tiles found in an array to a certain tildId.
-Game_Map.prototype.setTileIdByArray = function(tiles, tileId, z) {
-	if(z == null) {z = 0;};
-	for(var i = 0; i < tiles.length; i++) {
-		this.setTileId(tiles[i].x, tiles[i].y, z, tileId, true, false);
-	};
-};
-
-// New method
-Game_Map.prototype.detectFill = function(x1, y1, tileId, distance, z) {
-	if(z == null) {z = 0;};
-	if(distance == null) {distance = 10000};
-	var d = distance; //Total distance to detect spread.
-	var tiles = [];
-	var tile = this.detectTileMatch(x1, y1, tileId, z);
-	// console.log("Detected Origin Tile:", tile);
-	if(tile != null) {tiles.push(tile)};
-	var scanTiles = tiles;
-	for(var i = 0; i < d; i++) {
-		var nextTiles = [];
-		var spliceTiles = [];
-		for(var t = 0; t < scanTiles.length; t++) {
-			var tile = scanTiles[t];
-			var ringTiles = this.detectFillNeighbors(tile.x, tile.y, tileId, z);
-			var validRingTiles = [];
-			for(var r = 0; r < ringTiles.length; r++) {
-				var sameTile = false;
-				for(var t2 = 0; t2 < tiles.length; t2++) {
-					if(ringTiles[r].x == tiles[t2].x && ringTiles[r].y == tiles[t2].y) {
-						sameTile = true;
-					}
-				};
-				for(var n = 0; n < nextTiles.length; n++) {
-					if(ringTiles[r].x == nextTiles[n].x && ringTiles[r].y == nextTiles[n].y) {
-						sameTile = true;
-					}
-				};
-				if(sameTile == false) {
-					validRingTiles.push(ringTiles[r]);
-				};
-			};
-			nextTiles = [].concat(nextTiles, validRingTiles);
-			if(validRingTiles.length <= 0) {spliceTiles.push(tile);};
-		};
-		if(nextTiles.length <= 0) break; //If we didn't find any additional tiles, then we can break the for loop, because additional distance will not yield any more tiles.
-		tiles = [].concat(tiles, nextTiles);
-		scanTiles = [].concat(scanTiles, nextTiles);
-		for(var t = 0; t < spliceTiles.length; t++) {
-			scanTiles.splice(scanTiles.indexOf(spliceTiles[t]), 1);
-		};
-	};
-	/*
-	var text = tiles.length == 1 ? "Tile" : "Tiles";
-	var tileCode = this.tileCodeFromId(tileId);
-	console.log("Detected", tiles.length , text, "with TileCode", tileCode, tiles);
-	*/
-	return tiles;
-};
-
-// New method.
-Game_Map.prototype.detectTileMatch = function(x, y, tileId, z) {
-	var tile;
-	var a1 = this.autotileTypeById(tileId);
-	var a = this.autotileType(x, y, z);
-	if(((a == a1) && (a != -1)) || this.tileId(x, y, z) == tileId) { //Match is present.
-		tile = {x:x, y:y};
-	}
-	return tile;
-};
-
-// New method.
-Game_Map.prototype.detectFillNeighbors = function(x1, y1, tileId, z) {
-	var tiles = [];
-	for(var i = 0; i <= 3; i++) {
-		var x2 = x1 + (i == 0 ? 1 : 0) + (i == 1 ? -1 : 0);
-		var y2 = y1 + (i == 2 ? 1 : 0) + (i == 3 ? -1 : 0);
-		if(x2 < 0 || x2 > $gameMap.width() || y2 < 0 || y2 > $gameMap.height) {continue;}; //Do not detect non-existant tiles that are outside the boundaries of the map.
-		var tile = this.detectTileMatch(x2, y2, tileId, z);
-		if(tile != null) {tiles.push(tile)};
-	}
-	return tiles;
-};
-
-// New method
-Game_Map.prototype.fillInnerBorder = function(x1, y1, tileId, startTileId, z) {
-	if(z == null) {z = 0;};
-	if(startTileId == null) {startTileId = this.tileId(x1, y1, z);}; //If no startTileId provided, then use whatever tile is currently found at location (x1,y1,z).
-	var distance = null;
-	var detectFill = this.detectFill(x1, y1, startTileId, distance, z);
-	var borderTiles = this.detectBorderTiles(detectFill); //Inner border (shrink).
-	this.setTileIdByArray(borderTiles, tileId, z);
-};
-	
-// New method
-Game_Map.prototype.fillOuterBorder = function(x1, y1, tileId, startTileId, z) {
-	if(z == null) {z = 0;};
-	if(startTileId == null) {startTileId = this.tileId(x1, y1, z);}; //If no startTileId provided, then use whatever tile is currently found at location (x1,y1,z).
-	var distance = null;
-	var detectFill = this.detectFill(x1, y1, startTileId, distance, z);
-	var neighborTiles = this.detectNeighborTiles(detectFill); //Outer border (grow/spread).
-	this.setTileIdByArray(neighborTiles, tileId, z);
-};
-
-// New method
-Game_Map.prototype.fillInnerBorderRegion = function(x1, y1, tileId, region, startTileId, z) {
-	if(region == null) {region = this.regionId(x1, y1);};
-	if(z == null) {z = 0;};
-	if(startTileId == null) {startTileId = this.tileId(x1, y1, z);}; //If no startTileId provided, then use whatever tile is currently found at location (x1,y1,z).
-	var distance = null;
-	var detectFill = this.detectFill(x1, y1, startTileId, distance, z);
-	var borderTiles = this.detectBorderTiles(detectFill); //Inner border (shrink).
-	var borderRegionTiles = this.detectRegionTiles(borderTiles, region);
-	this.setTileIdByArray(borderRegionTiles, tileId, z);
-};
-
-// New method
-Game_Map.prototype.fillOuterBorderRegion = function(x1, y1, tileId, region, startTileId, z) {
-	if(region == null) {region = this.regionId(x1, y1);};
-	if(z == null) {z = 0;};
-	if(startTileId == null) {startTileId = this.tileId(x1, y1, z);}; //If no startTileId provided, then use whatever tile is currently found at location (x1,y1,z).
-	var distance = null;
-	var detectFill = this.detectFill(x1, y1, startTileId, distance, z);
-	var neighborTiles = this.detectNeighborTiles(detectFill); //Outer border (grow/spread).
-	var neighborRegionTiles = this.detectRegionTiles(neighborTiles, region);
-	this.setTileIdByArray(neighborRegionTiles, tileId, z);
-};
-
-// New method
-// From the array tiles, returns an array containing only tiles found at the borders of the tiles provided, as seen on the map.
-Game_Map.prototype.detectBorderTiles = function(tiles) { //From a list of tiles detectFill, find the tiles that border on at least one tile that is not of type tileId.
-	var borderTiles = [];
-	for(var t = 0; t < tiles.length; t++) {
-		var neighbors = 0;
-		for(var t2 = 0; t2 < tiles.length; t2++) {
-			if(tiles[t].x == tiles[t2].x) {
-				if(tiles[t].y + 1 == tiles[t2].y) neighbors += 1;
-				if(tiles[t].y - 1 == tiles[t2].y) neighbors += 1;
-			} else if(tiles[t].y == tiles[t2].y) {
-				if(tiles[t].x + 1 == tiles[t2].x) neighbors += 1;
-				if(tiles[t].x - 1 == tiles[t2].x) neighbors += 1;
-			};
-		};
-		if(neighbors < 4) {
-			borderTiles.push(tiles[t]);
-		};
-	};
-	return borderTiles;
-};
-
-// New method
-// From the array tiles, returns an array containing only tiles that are neighbors of the tiles (not including the tiles provided).
-Game_Map.prototype.detectNeighborTiles = function(tiles) {
-	var neighborTiles = [];
-	//Find all the neighborTiles that are adjacent (in cardinal directions) to tiles.
-	for(var t = 0; t < tiles.length; t++) {
-		// console.log(tiles[t].x, tiles[t].y, tiles[t]);
-		for(var i = 0; i <= 3; i++) {
-			var x2 = tiles[t].x + (i == 0 ? 1 : 0) + (i == 1 ? -1 : 0);
-			var y2 = tiles[t].y + (i == 2 ? 1 : 0) + (i == 3 ? -1 : 0);
-			if(x2 < 0 || x2 > $gameMap.width() || y2 < 0 || y2 > $gameMap.height) {continue;}; //Do not detect non-existant tiles that are outside the boundaries of the map.
-			var tile = {x:x2, y:y2};
-			var withinFill = false;
-			for(var t2 = 0; t2 < tiles.length; t2++) {
-				if(tile.x == tiles[t2].x && tile.y == tiles[t2].y) {withinFill = true;};
-			};
-			if(tile != null && withinFill == false) {neighborTiles.push(tile)};
-		}
-	};
-	//console.log("Detected Neighbor Tiles:", neighborTiles);
-	return neighborTiles;
-};
-
-// New method
-// From the array tiles, returns an array containing only the tiles that have a certain region.
-Game_Map.prototype.detectRegionTiles = function(tiles, region) {
-	var regionTiles = [];
-	for(var t = 0; t < tiles.length; t++) {
-		if(this.regionId(tiles[t].x, tiles[t].y) == region) {regionTiles.push(tiles[t])};
-	};
-	//console.log("Detected Region Tiles:", regionTiles);
-	return regionTiles;
-};
-
 //=============================================================================
 // Game_Player
 //=============================================================================
@@ -1431,30 +635,6 @@ Game_Player.prototype.executeMove = function(direction) {
 	if(Tyruswoo.Param.TileInfoOnMove === 'true') {
 		$gameMap.logTileInfo(this.x, this.y);
 	}
-};
-
-//=============================================================================
-// Game_CharacterBase
-//=============================================================================
-
-// New method
-Game_CharacterBase.prototype.xFront = function() {
-    return this.xWithDirection(this.x, this.direction());
-};
-
-// New method
-Game_CharacterBase.prototype.yFront = function() {
-    return this.yWithDirection(this.y, this.direction());
-};
-
-// New method
-Game_CharacterBase.prototype.xWithDirection = function(x, d) {
-    return x + (d === 6 ? 1 : d === 4 ? -1 : 0);
-};
-
-// New method
-Game_CharacterBase.prototype.yWithDirection = function(y, d) {
-    return y + (d === 2 ? 1 : d === 8 ? -1 : 0);
 };
 
 //=============================================================================
