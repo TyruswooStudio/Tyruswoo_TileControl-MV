@@ -37,7 +37,7 @@ var Tyruswoo = Tyruswoo || {};
 Tyruswoo.TileControl = Tyruswoo.TileControl || {};
 
 /*:
- * @plugindesc v2.0.1  Allows greater control of tiles and tilesets.
+ * @plugindesc v1.0.1  Allows greater control of tiles and tilesets.
  * @author Tyruswoo
  *
  * @param Tile Info on Move
@@ -60,16 +60,12 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * Tile Control
  * by Tyruswoo
  *
- * Last Update: April 19, 2020
+ * Last Update: 14 Jun. 2016
  * ===========================================================================
  * Plugin Commands:
  *
  * Tile Info       Displays the location and ID of the tiles on which
  *                 the player currently stands.
- *
- * Tile Refresh    Forces the tilemap to refresh, which allows correctly
- *                 displaying the graphics of the map's tiles. (Note: Tilemap
- *                 refresh is automatic whenever a tile is changed.)
  *
  * Tile Set x y z tileId     Set a tile at coordinates x y and layer z
  *                           to the selected tileId.  z = 0 for lowest layer.
@@ -82,60 +78,23 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  *
  * Tile Set EventLoc eventID z tileId      At the location of the event with
  *                                         eventID, set layer z to tileId.
+ *
+ * Tile Refresh    This is an advanced legacy command that you probably won't
+ *                 need. Forces the tilemap to refresh, which allows correctly
+ *                 displaying the graphics of the map's tiles as soon as
+ *                 changes are made.  In other words, this allows the
+ *                 map's tiles to refresh faster than the Tile Animation
+ *                 Speed. Note that by default, this occurs automatically after
+ *                 every "Tile Set" command, so you don't need to call it.
+ *                 It is here in case for any reason you need it.
+ *                 Use the "Tile Refresh" plugin command at the
+ *                 end of any event that alters tiles, to allow prompt
+ *                 updating of the graphics.
  * ===========================================================================
- * A tile's tileId may be identified by opening the console window (using
- * F12), then by having the party leader stand on the tile of interest, then
- * holding the Control (Ctrl) key and pressing Enter (Return).
  *
- * For example, using the default Overworld tileset, a whirlpool can be placed
- * using the following plugin command:
- *
- *     Tile Set PlayerLoc 0 2576
- *
- * There is also an easier way to specify the tileId. Rather than using the
- * tileId itself, a code can be used. The code should begin with the letter of
- * the tile panel to be used (A, B, C, D, or E). This is followed by the code
- * number of the desired tile, where the numbers begin at 0 in the upper-left
- * corner of the tile pane, then proceed to increment by 1 from left to right,
- * then top to bottom. The pattern of the numbers for each pane A, B, C, D,
- * and E, matches exactly the numbers shown in the R (region) pane, so the
- * region pane can be used to determine the code number of any desired tile.
- *
- * For example, using the default Overworld tileset, a whirlpool can be placed
- * using this plugin command:
- *
- *     Tile Set PlayerLoc 0 A11
- *
- * Notice in the above, that the whirlpool tile is in the A panel, and it is
- * tile 11 in the panel.
- *
- * Another easy way to specify the tileId is using tilemap coordinates; in
- * other words, the (x,y) position of the desired tile within the tile's
- * selection panel.
- *
- * For example, using the default Overworld tileset, a whirlpool can be placed
- * using this plugin command:
- *
- *     Tile Set PlayerLoc 0 A3,1
- *
- * ===========================================================================
- * By default, above the selected z layer, all z layers are erased when the
- * tile is set. This is similar to how RPG Maker MV works in the map editor.
- * If you want to set a single z layer without modifying any upper z layers,
- * use "Tile SetLayer" instead of "Tile Set".
- *
- * By default, autotiles are detected, so if Tile Set is used to set an
- * autotile, then nearby autotiles will be detected, and they will be linked
- * together. If you want to prevent autotiling, and just set the tile exactly,
- * then use "Tile SetExact" instead of "Tile Set". This is similar to using a
- * Ctrl+RightClick to copy a tile exactly in the map editor.
- *
- * It is possible to combine "Tile SetLayer" and "Tile SetExact". So, you can
- * use "Tile SetLayerExact" (or synonymously, "Tile SetExactLayer"). Using
- * "Tile SetLayerExact" will result in the z layer of the tile being modified,
- * without changing the above z layers of the tile, and without affecting
- * any nearby autotiling.
- * ===========================================================================
+ * Note:  Tile smoothing does not currently account for diagonal autotiles.
+ * 
+ * ============================================================================
  * MIT License
  *
  * Copyright (c) 2023 Kathy Bunn and Scott Tyrus Washburn
@@ -157,7 +116,6 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
- * 
  */
  
 Tyruswoo.Parameters = PluginManager.parameters('Tyruswoo_TileControl');
@@ -170,6 +128,7 @@ Tyruswoo.Param.OkButtonCommonEvent = String(Tyruswoo.Parameters['Button Common E
 
 //=============================================================================
 // Tile data persistence
+// By McKathlin
 //=============================================================================
 
 // Alias method
@@ -220,7 +179,8 @@ DataManager.extractSaveContents = function(contents) {
 };
 
 //=============================================================================
-// Game_Interpreter
+// Game_Interpreter - plugin commands
+// By Tyruswoo
 //=============================================================================
  
 // Alias method
@@ -239,25 +199,15 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 				$gameMap._needsTilemapRefresh = true;
 				break;
 			case 'set':
-			case 'setexact':
 			case 'setlayer':
-			case 'setlayerexact':
-			case 'setexactlayer':
-				var clearUpperLayers = true; //By default, we clear any upper z layers.
-				if(subCommand == 'setlayer' || subCommand == 'setlayerexact' || subCommand == 'setexactlayer'){ //To keep upper z layers, use "Tile SetLayer".
-					clearUpperLayers = false;
-				};
-				var exact = false; //By default, we allow autotiles to be detected, so that autotiles connect together.
-				if(subCommand == 'setexact' || subCommand == 'setlayerexact' || subCommand == 'setexactlayer'){ //To set the tile exactly as written, ignoring autotile properties, use "Tile SetExact".
-					exact = true;
-				};
+				var clearUpperLayers = (subCommand != 'setlayer');
 				var x, y, z, tileId;
-				switch(args[1].toLowerCase()) {
+				switch(args[1]) {
 					case 'playerloc':
 						x = $gamePlayer.x;
 						y = $gamePlayer.y;
 						z = args[2];
-						tileId = this.readTileCode(args[3]);
+						tileId = args[3];
 					//	console.log("Tile Set PlayerLoc z =", z, "to tileId", tileId);
 						break;
 					case 'playerfront':
@@ -267,7 +217,7 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 						x = $gameMap.xWithDirection(x, d);
 						y = $gameMap.yWithDirection(y, d);
 						z = args[2];
-						tileId = this.readTileCode(args[3]);
+						tileId = args[3];
 					//	console.log("Tile Set PlayerFront z =", z, "to tileId", tileId);
 						break;
 					case 'eventloc':
@@ -275,116 +225,25 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 						x = e.x;
 						y = e.y;
 						z = args[3];
-						tileId = this.readTileCode(args[4]);
+						tileId = args[4];
 					//	console.log("Tile Set EventLoc at event =", e._eventId, "z =", z, "to tileId", tileId);
 						break;
 					default:
 						x = args[1];
 						y = args[2];
 						z = args[3];
-						tileId = this.readTileCode(args[4]);
+						tileId = args[4];
 					//	console.log("Tile Set", x, y, z, "to tileId", tileId);
 				}
-				$gameMap.setTileId(x, y, z, tileId, clearUpperLayers, exact);
+				$gameMap.setTileId(x, y, z, tileId, clearUpperLayers);
 				break;
 		}
 	}
 };
-
-// New method
-Game_Interpreter.prototype.readTileCode = function(arg) {
-	var tileId = 0;
-	var codeLetter = arg.toLowerCase().charAt(0);
-	var codeNumber = -1;
-	var codeX = 0;
-	var codeY = 0;
-	if(arg.charAt(2) && arg.charAt(2) == ',') {
-		codeX = parseInt(arg.charAt(1));
-		codeY = parseInt(arg.substr(3));
-	} else {
-		codeNumber = parseInt(arg.substr(1));
-	}
-	//console.log("Tyruswoo Tile Control codeLetter:", codeLetter);
-	//console.log("Tyruswoo Tile Control codeNumber:", codeNumber);
-	//console.log("Tyruswoo Tile Control codeX:", codeX);
-	//console.log("Tyruswoo Tile Control codeY:", codeY);
-	switch(codeLetter) {
-		case 'a':
-			if(codeNumber <= 127) { //A1, A2, A3, and A4 autotiles.
-				tileId += Tilemap.TILE_ID_A1;
-				tileId += (codeNumber >= 0) ? codeNumber * 48 : (codeY * 8 + codeX) * 48;
-			} else { //A5 tiles.
-				tileId += Tilemap.TILE_ID_A5;
-				tileId += (codeNumber >= 0) ? codeNumber - 128 : (codeY - 16) * 8 + codeX;
-			};
-			break;
-		case 'b':
-			tileId += Tilemap.TILE_ID_B;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		case 'c':
-			tileId += Tilemap.TILE_ID_C;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		case 'd':
-			tileId += Tilemap.TILE_ID_D;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		case 'e':
-			tileId += Tilemap.TILE_ID_E;
-			tileId += (codeNumber >= 0) ? codeNumber : codeY * 8 + codeX;
-			break;
-		default:
-			tileId = arg;
-	};
-	//console.log("Tyruswoo Tile Control Interpreted tileId:", tileId);
-	return tileId;
-};
 	
 //=============================================================================
-// Game_Map
+// Game_Map - Tile data setting
 //=============================================================================
-
-// New method
-// This method is useful for use as a script in a Conditional Branch.
-Game_Map.prototype.tileCodeAt = function(x, y, z) {
-	var tileId = this.tileId(x, y, z);
-	return this.tileCodeFromId(tileId);
-};
-
-// New method
-// This method takes a tileId as input, and returns the tileCode.
-Game_Map.prototype.tileCodeFromId = function(tileId) {
-	var tileCode = "";
-	var codeX = 0;
-	var codeY = 0;
-	if(tileId >= Tilemap.TILE_ID_A1) {
-		codeY = Math.floor((tileId - Tilemap.TILE_ID_A1) / (48 * 8));
-		codeX = Math.floor((tileId - Tilemap.TILE_ID_A1 - codeY * 48 * 8) / 48);
-		tileCode = "A" + codeX + "," + codeY;
-	} else if(tileId >= Tilemap.TILE_ID_A5) {
-		codeY = Math.floor((tileId - Tilemap.TILE_ID_A5) / 8) + 16;
-		codeX = tileId - Tilemap.TILE_ID_A5 - (codeY - 16) * 8;
-		tileCode = "A" + codeX + "," + codeY;
-	} else if(tileId >= Tilemap.TILE_ID_E) {
-		codeY = Math.floor((tileId - Tilemap.TILE_ID_E) / 8);
-		codeX = tileId - Tilemap.TILE_ID_E - codeY * 8;
-		tileCode = "E" + codeX + "," + codeY;
-	} else if(tileId >= Tilemap.TILE_ID_D) {
-		codeY = Math.floor((tileId - Tilemap.TILE_ID_D) / 8);
-		codeX = tileId - Tilemap.TILE_ID_D - codeY * 8;
-		tileCode = "D" + codeX + "," + codeY;
-	} else if(tileId >= Tilemap.TILE_ID_C) {
-		codeY = Math.floor((tileId - Tilemap.TILE_ID_C) / 8);
-		codeX = tileId - Tilemap.TILE_ID_C - codeY * 8;
-		tileCode = "C" + codeX + "," + codeY;
-	} else if(tileId >= Tilemap.TILE_ID_B) {
-		codeY = Math.floor((tileId - Tilemap.TILE_ID_B) / 8);
-		codeX = tileId - Tilemap.TILE_ID_B - codeY * 8;
-		tileCode = "B" + codeX + "," + codeY;
-	};
-	return tileCode;
-};
 
 // Alias method
 Tyruswoo.TileControl.Game_Map_initialize = Game_Map.prototype.initialize;
@@ -394,12 +253,14 @@ Game_Map.prototype.initialize = function(mapId) {
     this._tileChanges = {};
 };
 
+// Alias method
 Tyruswoo.TileControl.Game_Map_setup = Game_Map.prototype.setup;
 Game_Map.prototype.setup = function(mapId) {
 	Tyruswoo.TileControl.Game_Map_setup.call(this, mapId);
 	this._tileChanges = this.getTileChangeData(mapId);
 }
 
+// New method
 Game_Map.prototype.getTileChangeData = function(mapId) {
 	if (!mapId || mapId <= 0) {
 		throw new Error("Invalid Map ID: " + mapId);
@@ -414,13 +275,11 @@ Game_Map.prototype.getTileChangeData = function(mapId) {
 Game_Map.prototype.logTileInfo = function(x, y) {
 	var tileId = this.tileId(x, y, 0);
 	var a = this.autotileType(x, y, 0);
-	var tileCode = this.tileCodeAt(x, y, 0);
-	console.log("Info: Tile", x, y, 0, "tileId", tileId, "Autotile Type", a, "Code", tileCode);
+	console.log("Info: Tile", x, y, 0, "tileId", tileId, "Autotile Type", a);
 	for(z = 1; z <= 3; z++) {
 		tileId = this.tileId(x, y, z);
 		a = this.autotileType(x, y, z);
-		tileCode = this.tileCodeAt(x, y, z);
-		console.log("      Tile", x, y, z, "tileId", tileId, "Autotile Type", a, "Code", tileCode);
+		console.log("      Tile", x, y, z, "tileId", tileId, "Autotile Type", a);
 	}
 	var r = this.regionId(x, y);
 	var t = this.terrainTag(x, y);
@@ -429,7 +288,7 @@ Game_Map.prototype.logTileInfo = function(x, y) {
 }
 
 // New method
-Game_Map.prototype.setTileId = function(x, y, z, tileId, clearUpperLayers, exact) {
+Game_Map.prototype.setTileId = function(x, y, z, tileId, clearUpperLayers) {
 	var x = Math.round(x);
 	var y = Math.round(y);
 	if (clearUpperLayers) {
@@ -438,20 +297,17 @@ Game_Map.prototype.setTileId = function(x, y, z, tileId, clearUpperLayers, exact
 		}
 	}
 	var a = this.autotileTypeById(tileId);
-	if(!exact && a != -1) {
-		tileId = this.shapeAutotile(x, y, z, a);
+	if(a != -1 && a != 9) {
+		tileId = this.autotileLink(x, y, z, a);
 	}
 	this.setExactTileId(x, y, z, tileId);
-	if(!exact && a != -1) {
+	if(a != -1 && a != 9) {
 		this.autotileNeighbor(x, y - 1, z);
 		this.autotileNeighbor(x + 1, y, z);
 		this.autotileNeighbor(x, y + 1, z);
-		this.autotileNeighbor(x - 1, y, z);
-		this.autotileNeighbor(x - 1, y - 1, z);
-		this.autotileNeighbor(x - 1, y + 1, z);
-		this.autotileNeighbor(x + 1, y - 1, z);
-		this.autotileNeighbor(x + 1, y + 1, z);
+		this.autotileNeighbor(x - 1, y, z);	
 	}
+	$gameMap._needsTilemapRefresh = true; //Every time a tile ID is set, refresh.
 };
 
 // New method
@@ -464,140 +320,178 @@ Game_Map.prototype.setExactTileId = function(x, y, z, tileId) {
 	var index = (z * $dataMap.height + y) * $dataMap.width + x;
 	$dataMap.data[index] = tileId;
 	this._tileChanges[index] = tileId;
-	this._needsTilemapRefresh = true; //Every time a tile ID is set, refresh.
 }
 
+// New method
 Game_Map.prototype.autotileNeighbor = function(x, y, z) {
 	var a = this.autotileType(x, y, z);
 	if (a == -1) {
 		return;
 	}
-	tileId = this.shapeAutotile(x, y, z, a);
+	tileId = this.autotileLink(x, y, z, a);
 	this.setExactTileId(x, y, z, tileId);
 };
 
 // New method
-Game_Map.prototype.shapeAutotile = function(x, y, z, a) {
-	var n = false; //Keep track of whether there is a matching autotile neighboring in the given direction.
+Game_Map.prototype.autotileLink = function(x, y, z, a) {
+	var tileId = a * 48 + 2048;
+	var n = false;
 	var e = false;
 	var s = false;
 	var w = false;
-	var nw = false;
-	var ne = false;
-	var se = false;
-	var sw = false;
-	var a_n = this.autotileType(x, y - 1, z); //Determine the autotile type of neighboring tiles.
-	var a_e = this.autotileType(x + 1, y, z);
-	var a_s = this.autotileType(x, y + 1, z);
-	var a_w = this.autotileType(x - 1, y, z);
-	var a_nw = this.autotileType(x - 1, y - 1, z);
-	var a_ne = this.autotileType(x + 1, y - 1, z);
-	var a_se = this.autotileType(x + 1, y + 1, z);
-	var a_sw = this.autotileType(x - 1, y + 1, z);
-	if(a_n == a) {n = true;}; //If the neighboring tile's autotile type matches the current tile's autotile type, then remember this.
-	if(a_e == a) {e = true;};
-	if(a_s == a) {s = true;};
-	if(a_w == a) {w = true;};
-	if(a_nw == a) {nw = true;};
-	if(a_ne == a) {ne = true;};
-	if(a_se == a) {se = true;};
-	if(a_sw == a) {sw = true;};
-	var baseTileId = a * 48 + 2048;
-	var tileId = baseTileId;
-	if(Tilemap.isWaterfallTile(baseTileId)) { //Waterfall Animation Autotiles
-		tileId += this.calculateWaterfallShape(e, w);
-	} else if(Tilemap.isTileA3(baseTileId) || Tilemap.isWallSideTile(baseTileId)) { //Buildings Autotiles
-		tileId += this.calculateAutotileNESWShape(n, e, s, w);
-	} else { //All other autotiles.
-		tileId += this.calculateAutotileShape(n, e, s, w, nw, ne, se, sw);
-	};
+	var a_n0 = this.autotileType(x, y - 1, 0);
+	var a_e0 = this.autotileType(x + 1, y, 0);
+	var a_s0 = this.autotileType(x, y + 1, 0);
+	var a_w0 = this.autotileType(x - 1, y, 0);
+	var a_n1 = this.autotileType(x, y - 1, 1);
+	var a_e1 = this.autotileType(x + 1, y, 1);
+	var a_s1 = this.autotileType(x, y + 1, 1);
+	var a_w1 = this.autotileType(x - 1, y, 1);
+	switch(a) {  //We make a values the same for a few values.
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a = 0;
+			break;
+	}
+	switch(a_n0) {  //We make a_n0 values the same for a few values.
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_n0 = 0;
+			break;
+	}
+	switch(a_e0) {
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_e0 = 0;
+			break;
+	}
+	switch(a_s0) {
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_s0 = 0;
+			break;
+	}
+	switch(a_w0) {
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_w0 = 0;
+			break;
+	}
+	switch(a_n1) {  //We make a_n values the same for a few values.
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_n1 = 0;
+			break;
+	}
+	switch(a_e1) {
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_e1 = 0;
+			break;
+	}
+	switch(a_s1) {
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_s1 = 0;
+			break;
+	}
+	switch(a_w1) {
+		case 0:
+		case 1:
+		case 9:
+		case 10:
+			a_w1 = 0;
+			break;
+	}
+	if(a_n1 == a || a_n0 == a) {n = true;};
+	if(a_e1 == a || a_e0 == a) {e = true;};
+	if(a_s1 == a || a_s0 == a) {s = true;};
+	if(a_w1 == a || a_w0 == a) {w = true;};
+	tileId = this.autotileSmooth(tileId, n, e, s, w);
 	return tileId;
 };
 
 // New method.
-// This method accounts for all cardinal and diagonal autotiles.
-// Although the if and else statements below may seem strangely arranged, they coordinate with the
-// progression of the tileId and the corresponding autotile shapes. There are 48 tileIds for shapes,
-// but only 47 of the tileIds are needed to account for all possible shapes. Therefore, shapes range from 0-46.
-// n, e, s, w, nw, ne, se, sw: These boolean values indicate whether a matching autotile is located
-// in the corresponding direction from the autotile being shaped.
-Game_Map.prototype.calculateAutotileShape = function(n, e, s, w, nw, ne, se, sw) {
-	var shape = 0;
-	if(n && e && s && w) { //Shapes 0-15.
-		if(!nw) shape += 1;
-		if(!ne) shape += 2;
-		if(!se) shape += 4;
-		if(!sw) shape += 8;
-	} else if(n && e && s && !w){ //Shapes 16-19.
-		shape += 16;
-		if(!ne) shape += 1;
-		if(!se) shape += 2;
-	} else if(!n && e && s && w){ //Shapes 20-23.
-		shape += 20;
-		if(!se) shape += 1;
-		if(!sw) shape += 2;
-	} else if(n && !e && s && w){ //Shapes 24-27.
-		shape += 24;
-		if(!sw) shape += 1;
-		if(!nw) shape += 2;
-	} else if(n && e && !s && w){ //Shapes 28-31.
-		shape += 28;
-		if(!nw) shape += 1;
-		if(!ne) shape += 2;
-	} else if(n && !e && s && !w){ //Shape 32.
-		shape += 32;
-	} else if(!n && e && !s && w){ //Shape 33.
-		shape += 33;
-	} else if(!n && e && s && !w){ //Shapes 34-35.
-		shape += 34;
-		if(!se) shape += 1;
-	} else if(!n && !e && s && w){ //Shapes 36-37.
-		shape += 36;
-		if(!sw) shape += 1;
-	} else if(n && !e && !s && w){ //Shapes 38-39.
-		shape += 38;
-		if(!nw) shape += 1;
-	} else if(n && e && !s && !w){ //Shapes 40-41.
-		shape += 40;
-		if(!ne) shape += 1;
-	} else if(!n && !e && s && !w){ //Shape 42.
-		shape += 42;
-	} else if(!n && e && !s && !w){ //Shape 43.
-		shape += 43;
-	} else if(n && !e && !s && !w){ //Shape 44.
-		shape += 44;
-	} else if(!n && !e && !s && w){ //Shape 45.
-		shape += 45;
-	} else if(!n && !e && !s && !w){ //Shape 46
-		shape += 46;
-		//tileId+47 (Shape 47) is not used; it is a duplicate of tileId+46 (Shape 46).
-	};
-	return shape;
-};
-
-// New method
-// For calculating the shape (appearance) of waterfall tiles.
-Game_Map.prototype.calculateWaterfallShape = function(e, w) {
-	var shape = 0; //Shape 0.
-	if(e && !w) { //Shape 1.
-		shape += 1;
-	} else if(!e && w) { //Shape 2.
-		shape += 2;
-	} else if(!e && !w) { //Shape 3.
-		shape += 3;
-	};
-	return shape;
-};
-
-// New method
-// For calculating the shape (appearance) of building (roof and building edge) tiles (A3 tiles), and wall side tiles (certain A4 tiles).
-Game_Map.prototype.calculateAutotileNESWShape = function(n, e, s, w) {
-	var shape = 0; //Shapes 0-15.
-	if(!w) shape += 1;
-	if(!n) shape += 2;
-	if(!e) shape += 4;
-	if(!s) shape += 8;
-	return shape;
+// Note: Tile smoothing does not currently account for diagnoal autotiles.
+Game_Map.prototype.autotileSmooth = function(tileId, n, e, s, w) {
+	if(n == true) {
+		if(e == true) {
+			if(s == true) {
+				if(w == true) {
+					tileId += 0;
+				} else {
+					tileId += 16;
+				}
+			} else {
+				if(w == true) {
+					tileId += 28;
+				} else {
+					tileId += 40;
+				}
+			}
+		} else {
+			if(s == true) {
+				if(w == true) {
+					tileId += 24;
+				} else {
+					tileId += 32;
+				}
+			} else {
+				if(w == true) {
+					tileId += 38;
+				} else {
+					tileId += 44;
+				}
+			}
+		}
+	} else {
+		if(e == true) {
+			if(s == true) {
+				if(w == true) {
+					tileId += 20;
+				} else {
+					tileId += 34;
+				}
+			} else {
+				if(w == true) {
+					tileId += 33;
+				} else {
+					tileId += 43;
+				}
+			}
+		} else {
+			if(s == true) {
+				if(w == true) {
+					tileId += 36;
+				} else {
+					tileId += 42;
+				}
+			} else {
+				if(w == true) {
+					tileId += 45;
+				} else {
+					tileId += 46;
+				}
+			}
+		}
+	}
+	return tileId;
 };
 
 //=============================================================================
