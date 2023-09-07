@@ -289,11 +289,11 @@ any nearby autotiling.
   and other commands that combine these features.
 
 **v3.0** - May 21, 2020
-- Adds the `Tile Fill` command!
+- Added `Tile Fill` command!
 
 **v3.1** - July 12, 2020
-- Enables providing relative coordinates in all commands.
-- Adds border fill commands.
+- Enabled providing relative coordinates in all commands.
+- Added border fill commands.
 
 **v4.0** - November 8, 2021:
 - Fixed bug that was keeping A5 tiles from being placed properly when
