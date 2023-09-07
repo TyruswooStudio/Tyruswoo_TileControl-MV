@@ -3,7 +3,7 @@ It lacks the features and improvements of this plugin's later versions.
 To get the latest version for free, visit
 [Tyruswoo.com](https://www.tyruswoo.com).
 
-# Tyruswoo Tile Control v3.1.1 for RPG Maker MV
+# Tyruswoo Tile Control v2.0.1 for RPG Maker MV
 
 Change tiles dynamically during gameplay!
 
