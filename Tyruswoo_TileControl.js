@@ -37,7 +37,7 @@ var Tyruswoo = Tyruswoo || {};
 Tyruswoo.TileControl = Tyruswoo.TileControl || {};
 
 /*:
- * @plugindesc v1.0.1  Allows greater control of tiles and tilesets.
+ * @plugindesc MV v1.0.1  Allows greater control of tiles and tilesets.
  * @author Tyruswoo
  *
  * @param Tile Info on Move
