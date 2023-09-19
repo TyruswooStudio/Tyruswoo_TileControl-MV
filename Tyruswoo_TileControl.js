@@ -37,7 +37,7 @@ var Tyruswoo = Tyruswoo || {};
 Tyruswoo.TileControl = Tyruswoo.TileControl || {};
 
 /*:
- * @plugindesc v4.0.1  Change tiles dynamically during gameplay!
+ * @plugindesc MV v4.0.1  Change tiles dynamically during gameplay!
  * @author Tyruswoo and McKathlin
  *
  * @param Tile Info on Move
