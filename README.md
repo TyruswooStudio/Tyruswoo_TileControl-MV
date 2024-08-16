@@ -282,6 +282,8 @@ use "Tile SetLayerExact" (or synonymously, "Tile SetExactLayer"). Using
 without changing the above z layers of the tile, and without affecting
 any nearby autotiling.
 
+### Visit [**Tyruswoo.com**](https://www.tyruswoo.com) to [ask for help](https://www.tyruswoo.com/contact-us/), [donate](https://www.tyruswoo.com/donate/), or browse more of our [plugins](https://www.tyruswoo.com/downloads/rpg-maker-plugin-downloads/).
+
 ## Version History
 
 **v2.1** - May 7, 2020
