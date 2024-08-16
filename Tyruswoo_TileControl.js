@@ -303,6 +303,8 @@ Tyruswoo.TileControl = Tyruswoo.TileControl || {};
  * without changing the above z layers of the tile, and without affecting
  * any nearby autotiling.
  * ===========================================================================
+ * Visit Tyruswoo.com to ask for help, donate, or browse more of our plugins.
+ * ===========================================================================
  * v2.1: May 7, 2020
  *       It is now possible to use the following commands:
  *
